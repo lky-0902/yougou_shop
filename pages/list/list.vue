@@ -9,7 +9,7 @@
 			<text>价格</text>
 		</view>
 		<view class="lists">
-			<view class="list_item" v-for="(item,index) in goodsList" :key="index">
+			<view class="list_item" v-for="(item,index) in goodsList" :key="index" @click="toDetail()">
 				<image :src="item.goods_big_logo" mode="widthFix"></image>
 				<view class="pro_info">
 					<view class="pro_description">{{item.goods_name}}</view>
@@ -37,6 +37,11 @@
 			toSearch() {
 				uni.navigateTo({
 					url: '/pages/search/search'
+				});
+			},
+			toDetail() {
+				uni.navigateTo({
+					url: '/pages/detail/detail'
 				});
 			},
 			getList() {
