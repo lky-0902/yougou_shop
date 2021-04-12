@@ -9,11 +9,11 @@
 		<view class="list">
 			<view class="list_item">
 				<label>
-					<checkbox color="#d4237a"/>
+					<checkbox color="#d4237a" />
 				</label>
 				<image src="../../static/icon/logo.png" mode="widthFix"></image>
 				<view class="pro_info">
-					<view class="pro_description">介绍触发不上班是不被收入提高</view>
+					<view class="pro_description">111111</view>
 					<view class="price">
 						<text style="color:#d4237a;font-weight: bold;">￥179</text>
 						<view class="num_box">
@@ -25,7 +25,7 @@
 		</view>
 		<view class="pay">
 			<label>
-				<checkbox color="#d4237a"/>全选
+				<checkbox color="#d4237a" />全选
 			</label>
 			<view class="price">
 				<view style="color:#d4237a;font-weight: bold;">￥179</view>
@@ -41,117 +41,153 @@
 	export default {
 		data() {
 			return {
-				
+				goods_id: []
 			}
 		},
-		components:{
+		components: {
 			UniNumberBox
 		},
+		onLoad() {
+			uni.$on('add', function(data) {
+				console.log(data.msg)
+				this.goods_id.push(data.msg)
+				console.log(this.goods_id)
+			})
+		},
 		methods: {
-			addAddress(){
+			addAddress() {
 				uni.navigateTo({
-				    url: '/pages/address/address'
+					url: '/pages/address/address'
 				});
+			},
+			loadGoods() {
+				for (var x = 0; x < this.goods_id.length; x++) {
+					uni.request({
+						url: "https://api-hmugo-web.itheima.net/api/public/v1/goods/detail",
+						data: {
+							goods_id: this.goods_id[x]
+						},
+						success: (res) => {
+							console.log(res)
+						}
+					})
+				}
 			}
 		}
 	}
 </script>
 
 <style lang="scss">
-.cart{
-	height: 100vh;
-	position: relative;
-	.address{
-		width: 100%;
-		height: 120rpx;
-		border-bottom: solid 2px #e30081;
-		display: flex;
-		align-items: center;
-		button{
-			width: 60%;
+	.cart {
+		height: 100vh;
+		position: relative;
+
+		.address {
+			width: 100%;
+			height: 120rpx;
+			border-bottom: solid 2px #e30081;
+			display: flex;
+			align-items: center;
+
+			button {
+				width: 60%;
+				height: 80rpx;
+				line-height: 80rpx;
+				color: #46c85b;
+				border: solid 1px #46c85b;
+				background-color: #fff;
+			}
+		}
+
+		.title {
 			height: 80rpx;
 			line-height: 80rpx;
-			color: #46c85b;
-			border: solid 1px #46c85b;
-			background-color: #fff;
-		}
-	}
-	.title{
-		height: 80rpx;line-height: 80rpx;
-		font-size: 20px;
-		font-weight: 700;
-		border-bottom: solid 1px #e30081;
-		text{
-			margin-left: 20rpx;
-		}
-	}
-	.list{
-		overflow: scroll;
-		.list_item{
-			width: 100%;
-			height: 200rpx;
-			display: flex;
-			border-bottom: solid 1px #cbcbcb;
-			checkbox{
-				margin-left: 10rpx;
-				margin-top: 80rpx;
+			font-size: 20px;
+			font-weight: 700;
+			border-bottom: solid 1px #e30081;
+
+			text {
+				margin-left: 20rpx;
 			}
-			image{
-				width: 160rpx;
-				margin-left: 30rpx;
-				margin-top: 20rpx;
-			}
-			.pro_info{
-				.pro_description{
-					width: 420rpx;
-					height: 80rpx;
-					margin-top: 20rpx;
-					margin-left: 50rpx;
-					font-size: 14px;
+		}
+
+		.list {
+			overflow: scroll;
+
+			.list_item {
+				width: 100%;
+				height: 200rpx;
+				display: flex;
+				border-bottom: solid 1px #cbcbcb;
+
+				checkbox {
+					margin-left: 10rpx;
+					margin-top: 80rpx;
 				}
-				.price{
-					width: 420rpx;
-					height: 52rpx;
+
+				image {
+					width: 160rpx;
+					margin-left: 30rpx;
 					margin-top: 20rpx;
-					margin-left: 50rpx;
-					position: relative;
-					.num_box{
-						display: inline-block;
-						position: absolute;
-						right: 0;
-						bottom: 0;
+				}
+
+				.pro_info {
+					.pro_description {
+						width: 420rpx;
+						height: 80rpx;
+						margin-top: 20rpx;
+						margin-left: 50rpx;
+						font-size: 14px;
+					}
+
+					.price {
+						width: 420rpx;
+						height: 52rpx;
+						margin-top: 20rpx;
+						margin-left: 50rpx;
+						position: relative;
+
+						.num_box {
+							display: inline-block;
+							position: absolute;
+							right: 0;
+							bottom: 0;
+						}
 					}
 				}
 			}
 		}
-	}
-	.pay{
-		width: 100%;
-		height: 100rpx;
-		position: absolute;
-		bottom:0;
-		border-top: 1px solid #cbcbcb;
-		checkbox{
-			margin-left: 10rpx;
-			margin-top: 25rpx;
-		}
-		.price{
-			margin-top: 10rpx;
-			display: inline-block;
-			position: absolute;
-			right: 250rpx;
-		}
-		button{
-			width: 240rpx;
+
+		.pay {
+			width: 100%;
 			height: 100rpx;
-			line-height: 100rpx;
 			position: absolute;
-			right: 0;
-			background-color: #d4237a;
-			border: none;
-			border-radius: 0;
-			color: #fff;
+			bottom: 0;
+			border-top: 1px solid #cbcbcb;
+
+			checkbox {
+				margin-left: 10rpx;
+				margin-top: 25rpx;
+			}
+
+			.price {
+				margin-top: 10rpx;
+				display: inline-block;
+				position: absolute;
+				right: 250rpx;
+			}
+
+			button {
+				width: 240rpx;
+				height: 100rpx;
+				line-height: 100rpx;
+				position: absolute;
+				right: 0;
+				background-color: #d4237a;
+				border: none;
+				border-radius: 0;
+				color: #fff;
+			}
 		}
 	}
-}
 </style>

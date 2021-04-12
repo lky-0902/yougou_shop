@@ -4,7 +4,7 @@
 			<input type="text" v-model="query" class="search uni-input" confirm-type="search" placeholder="请输入要搜索的商品" @input="searchGoods()" />
 		</view>
 		<view class="lists">
-			<view class="list_item" v-for="(item,index) in goodsList" :key="index" @click="toDetail()">
+			<view class="list_item" v-for="(item,index) in goodsList" :key="index" @click="toDetail(item.goods_id)">
 				<view class="pro_info">
 					<view class="pro_description">{{item.goods_name}}</view>
 				</view>
@@ -34,9 +34,9 @@
 					}
 				})
 			},
-			toDetail() {
+			toDetail(id) {
 				uni.navigateTo({
-					url: '/pages/detail/detail'
+					url: '/pages/detail/detail?goods_id=' + id
 				});
 			},
 		}

@@ -12,7 +12,7 @@
 					<view class="title" v-for="data in item.children">
 						<view>/ {{data.cat_name}} /</view>
 						<view class="item_box">
-							<view class="item" v-for="i in data.children">
+							<view class="item" v-for="i in data.children" @click="toList(i.cat_id)">
 								<image :src="i.cat_icon"></image>
 								<view>{{i.cat_name}}</view>
 							</view>
@@ -40,6 +40,11 @@
 				uni.navigateTo({
 				    url: '/pages/search/search'
 				});
+			},
+			toList(cid){
+				uni.navigateTo({
+					url: '/pages/list/list?cid='+cid
+				})
 			},
 			getCategory() {
 				uni.request({

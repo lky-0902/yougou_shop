@@ -65,13 +65,33 @@
 	export default {
 		data() {
 			return {
-				
+
 			}
 		},
+		onLoad() {
+			uni.getProvider({
+				service: 'oauth',
+				success: function(res) {
+					console.log(res.provider)
+					uni.login({
+						provider: "weixin",
+						success: function(loginRes) {
+							console.log(loginRes.authResult)
+							uni.getUserInfo({
+								provider: 'weixin',
+								success: function(infoRes) {
+									console.log('用户昵称为：' + infoRes.userInfo.nickName);
+								}
+							});
+						}
+					})
+				}
+			});
+		},
 		methods: {
-			address(){
+			address() {
 				uni.navigateTo({
-				    url: '/pages/address/address'
+					url: '/pages/address/address'
 				});
 			}
 		}
@@ -79,139 +99,159 @@
 </script>
 
 <style lang="scss">
-@import '../../static/icon/iconfont.css';
-.user{
-	height: 100vh;
-	position: relative;
-	background-color: #CCCCCC;
-	.header{
-		width: 100%;
-		height: 40vh;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
+	@import '../../static/icon/iconfont.css';
+
+	.user {
+		height: 100vh;
 		position: relative;
-		.bg_img{
+		background-color: #CCCCCC;
+
+		.header {
 			width: 100%;
-			height: 100%;
-			position: absolute;
-			// z-index: -1;
-			image{
+			height: 40vh;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			position: relative;
+
+			.bg_img {
 				width: 100%;
 				height: 100%;
 				position: absolute;
-				filter: blur(15px);
+
 				// z-index: -1;
-				border-radius: 0;
+				image {
+					width: 100%;
+					height: 100%;
+					position: absolute;
+					filter: blur(15px);
+					// z-index: -1;
+					border-radius: 0;
+				}
+			}
+
+			image {
+				width: 180rpx;
+				border-radius: 90rpx;
+				z-index: 999;
+			}
+
+			.name {
+				margin-top: 50rpx;
+				z-index: 999;
+				color: #fff;
 			}
 		}
-		image{
-			width: 180rpx;
-			border-radius: 90rpx;
-			z-index: 999;
-		}
-		.name{
-			margin-top: 50rpx;
-			z-index: 999;
-			color: #fff;
-		}
-	}
-	.collect{
-		width: 720rpx;
-		height: 100rpx;
-		margin: 0 15rpx;
-		background-color: #fff;
-		position: absolute;
-		top: 400rpx;
-		z-index: 999;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-around;
-		.item{
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			font-size: 14px;
-			margin-top: 10rpx;
-			.count{
-				color: #d4237a;
-				font-weight: bold;
-			}
-		}	
-	}
-	.order{
-		width: 720rpx;
-		height: 200rpx;
-		margin: 0 15rpx;
-		background-color: #CCCCCC;
-		position: absolute;
-		top: 515rpx;
-		z-index: 999;
-		.title{
-			height: 75rpx;
-			line-height: 75rpx;
+
+		.collect {
+			width: 720rpx;
+			height: 100rpx;
+			margin: 0 15rpx;
 			background-color: #fff;
-			text{
-				margin-left: 20rpx;
-			}
-		}
-		.detail{
-			height: 120rpx;
-			margin-top: 5rpx;
-			background-color: #fff;
+			position: absolute;
+			top: 400rpx;
+			z-index: 999;
 			display: flex;
-			flex: row;
+			flex-direction: row;
 			justify-content: space-around;
-			.item{
+
+			.item {
 				display: flex;
 				flex-direction: column;
-				justify-content: space-around;
 				align-items: center;
 				font-size: 14px;
 				margin-top: 10rpx;
-				.iconfont{
-					font-size: 20px;
+
+				.count {
 					color: #d4237a;
+					font-weight: bold;
 				}
 			}
 		}
-	}
-	.address{
-		width: 720rpx;
-		height: 80rpx;
-		line-height: 80rpx;
-		margin: 0 15rpx;
-		background-color: #fff;
-		position: absolute;
-		top: 730rpx;
-		z-index: 999;
-		text{
-			margin-left: 20rpx;
-		}
-	}
-	.other{
-		width: 720rpx;
-		height: 250rpx;
-		margin: 0 15rpx;
-		background-color: #ccc;
-		position: absolute;
-		top: 825rpx;
-		z-index: 999;
-		text{
-			display: block;
-			height: 80rpx;
-			line-height: 80rpx;
-			background-color: #fff;
-			padding-left: 20rpx;
-			margin-top: 10rpx;
-			#phone{
-				position: absolute;
-				right: 20rpx;
-				top: 0;
+
+		.order {
+			width: 720rpx;
+			height: 200rpx;
+			margin: 0 15rpx;
+			background-color: #CCCCCC;
+			position: absolute;
+			top: 515rpx;
+			z-index: 999;
+
+			.title {
+				height: 75rpx;
+				line-height: 75rpx;
+				background-color: #fff;
+
+				text {
+					margin-left: 20rpx;
+				}
+			}
+
+			.detail {
+				height: 120rpx;
+				margin-top: 5rpx;
+				background-color: #fff;
+				display: flex;
+				flex: row;
+				justify-content: space-around;
+
+				.item {
+					display: flex;
+					flex-direction: column;
+					justify-content: space-around;
+					align-items: center;
+					font-size: 14px;
+					margin-top: 10rpx;
+
+					.iconfont {
+						font-size: 20px;
+						color: #d4237a;
+					}
+				}
 			}
 		}
-			
+
+		.address {
+			width: 720rpx;
+			height: 80rpx;
+			line-height: 80rpx;
+			margin: 0 15rpx;
+			background-color: #fff;
+			position: absolute;
+			top: 730rpx;
+			z-index: 999;
+
+			text {
+				margin-left: 20rpx;
+			}
+		}
+
+		.other {
+			width: 720rpx;
+			height: 250rpx;
+			margin: 0 15rpx;
+			background-color: #ccc;
+			position: absolute;
+			top: 825rpx;
+			z-index: 999;
+
+			text {
+				display: block;
+				height: 80rpx;
+				line-height: 80rpx;
+				background-color: #fff;
+				padding-left: 20rpx;
+				margin-top: 10rpx;
+
+				#phone {
+					position: absolute;
+					right: 20rpx;
+					top: 0;
+				}
+			}
+
+		}
 	}
-}
 </style>

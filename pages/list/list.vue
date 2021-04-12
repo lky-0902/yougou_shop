@@ -9,7 +9,7 @@
 			<text>价格</text>
 		</view>
 		<view class="lists">
-			<view class="list_item" v-for="(item,index) in goodsList" :key="index" @click="toDetail()">
+			<view class="list_item" v-for="(item,index) in goodsList" :key="index" @click="toDetail(item.goods_id)">
 				<image :src="item.goods_big_logo" mode="widthFix"></image>
 				<view class="pro_info">
 					<view class="pro_description">{{item.goods_name}}</view>
@@ -27,10 +27,17 @@
 		data() {
 			return {
 				goodsList: [],
-				cid:9
+				cid: 0,
+				query:""
 			}
 		},
-		onLoad() {
+		onLoad(data) {
+			console.log(data)
+			if(data.query === undefined){
+				this.cid = data.cid
+			}else{
+				this.query = data.query
+			}
 			this.getList()
 		},
 		methods: {
@@ -39,22 +46,34 @@
 					url: '/pages/search/search'
 				});
 			},
-			toDetail() {
+			toDetail(id) {
 				uni.navigateTo({
-					url: '/pages/detail/detail'
+					url: '/pages/detail/detail?goods_id=' + id
 				});
 			},
 			getList() {
-				uni.request({
-					url: "https://api-hmugo-web.itheima.net/api/public/v1/goods/search",
-					data: {
-						cid: this.cid
-					},
-					success: (res) => {
-						console.log(res.data.message.goods)
-						this.goodsList = res.data.message.goods
-					}
-				})
+				if(this.query === ""){
+					uni.request({
+						url: "https://api-hmugo-web.itheima.net/api/public/v1/goods/search",
+						data: {
+							cid: this.cid
+						},
+						success: (res) => {
+							this.goodsList = res.data.message.goods
+						}
+					})
+				}else{
+					uni.request({
+						url: "https://api-hmugo-web.itheima.net/api/public/v1/goods/search",
+						data: {
+							query: this.query
+						},
+						success: (res) => {
+							this.goodsList = res.data.message.goods
+						}
+					})
+				}
+				
 			}
 		}
 	}
@@ -111,16 +130,18 @@
 				.pro_info {
 					.pro_description {
 						width: 420rpx;
-						height: 80rpx;
+						height: 110rpx;
 						margin-top: 20rpx;
 						margin-left: 50rpx;
 						font-size: 14px;
+						overflow: hidden;
+						text-overflow:ellipsis;
 					}
 
 					.price {
 						width: 420rpx;
 						height: 52rpx;
-						margin-top: 40rpx;
+						margin-top: 15rpx;
 						margin-left: 50rpx;
 						position: relative;
 					}
